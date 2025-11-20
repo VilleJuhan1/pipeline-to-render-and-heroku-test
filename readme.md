@@ -1,7 +1,7 @@
 # Deployment Pipeline to Render
 
-This app is for testing a CI/CD Pipeline to Render. The idea is that each push to "main" branch is also deployed to Render.
+This app is for testing a CI/CD Pipeline to Render and Heroku. More targets might be added later. Each target has their own workflow and branch. Pushing to heroku branch initiates the workflow in heroku-deploy.yml and so on.
 
 ## Setup
 
-Clone the project and
+Fork the project and configure the secrets accordingly to each environment. Create the required webhook in Render and/or the app with Github pipeline in Heroku.
