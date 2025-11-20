@@ -17,7 +17,7 @@ jobs:
 
       - name: Syntax check Dockerfile
         run: |
-          if ! docker image build --dry-run -f Dockerfile .; then
+          if ! docker buildx build --dry-run -f Dockerfile .; then
             echo "Dockerfile syntax error!"
             exit 1
           fi
