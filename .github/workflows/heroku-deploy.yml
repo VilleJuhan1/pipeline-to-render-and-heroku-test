@@ -5,6 +5,8 @@ on:
     branches:
       - heroku # deploy only on pushes to heroku (change if needed)
 
+# Heroku deployment is automated via Heroku Git integration,
+# so this workflow focuses on pre-deployment checks.
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,21 +15,17 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set up Heroku CLI
+      - name: Syntax check Dockerfile
         run: |
-          curl https://cli-assets.heroku.com/install.sh | sh
+          if ! docker image build --dry-run -f Dockerfile .; then
+            echo "Dockerfile syntax error!"
+            exit 1
+          fi
 
-      - name: Log in to Heroku
+      - name: Syntax check app.py
         run: |
-          echo "$HEROKU_API_KEY" | heroku auth:token &> /dev/null
-          heroku auth:token > ~/.netrc
-          heroku whoami
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          python3 -m py_compile app.py
 
-      - name: Push to Heroku
+      - name: Check requirements.txt for flask
         run: |
-          heroku git:remote --app "$HEROKU_APP_NAME"
-          git push heroku HEAD:main --force
-        env:
-          HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+          grep -i '^flask' requirements.txt || (echo "Flask not found in requirements.txt!" && exit 1)

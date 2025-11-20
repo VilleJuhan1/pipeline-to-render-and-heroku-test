@@ -4,4 +4,4 @@ This app is for testing a CI/CD Pipeline to Render and Heroku. More targets migh
 
 ## Setup
 
-Fork the project and configure the secrets accordingly to each environment. Create the required webhook in Render and/or the app with Github pipeline in Heroku.
+Fork the project and configure the secrets accordingly to each environment. Create the required webhook in Render and/or the app with Github deployment pipeline in Heroku.
